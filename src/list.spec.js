@@ -53,4 +53,15 @@ describe('List', () => {
     expect(reduced).to.equal(6);
   });
 
+  it('should return index of element', function () {
+    let index = List.from([1, 2, 3]).indexOf(2);
+
+    expect(index).to.equal(1);
+  });
+
+  it('should nub', function () {
+    let nubed = List.from([1, 1, 1]).nub().toArray();
+
+    expect(nubed).to.deep.equal([1]);
+  });
 });

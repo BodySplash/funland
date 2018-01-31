@@ -30,12 +30,13 @@ List.prototype.fold = function (f, seed) {
 };
 
 List.prototype.filter = function (p) {
-  return this.cata({
-    Cons: (head, tail) => p(head)
-      ? List.Cons(head, tail.filter(p))
-      : tail.filter(p),
+  const filterRecurse = (i, that) => that.cata({
+    Cons: (head, tail) => p(head, i)
+      ? List.Cons(head, filterRecurse(i + 1, tail))
+      : filterRecurse(i + 1, tail),
     Nil: () => List.Nil
   });
+  return filterRecurse(0, this);
 };
 
 List.prototype.reduce = function (f) {
@@ -43,6 +44,21 @@ List.prototype.reduce = function (f) {
     Cons: (head, tail) => tail.fold(f, head),
     Nil: () => undefined
   });
+};
+
+List.prototype.indexOf = function (e) {
+
+  const indexOfRecurse = (i, that) => that.cata({
+    Cons: (head, tail) => head === e ? i : indexOfRecurse(i + 1, tail),
+    Nil: () => -1
+  });
+
+  return indexOfRecurse(0, this);
+};
+
+List.prototype.nub = function () {
+  const that = this;
+  return this.filter((e, index) => that.indexOf(e) === index);
 };
 
 module.exports = List;
