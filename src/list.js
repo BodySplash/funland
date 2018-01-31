@@ -22,9 +22,9 @@ List.prototype.map = function (f) {
   });
 };
 
-List.prototype.reduce = function (f, seed) {
+List.prototype.fold = function (f, seed) {
   return this.cata({
-    Cons: (head, tail) => tail.reduce(f, (f(seed, head))),
+    Cons: (head, tail) => tail.fold(f, (f(seed, head))),
     Nil: () => seed
   });
 };
@@ -35,6 +35,13 @@ List.prototype.filter = function (p) {
       ? List.Cons(head, tail.filter(p))
       : tail.filter(p),
     Nil: () => List.Nil
+  });
+};
+
+List.prototype.reduce = function (f) {
+  return this.cata({
+    Cons: (head, tail) => tail.fold(f, head),
+    Nil: () => undefined
   });
 };
 

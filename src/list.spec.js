@@ -22,17 +22,17 @@ describe('List', () => {
     expect(result).to.deep.equal([3, 4, 5]);
   });
 
-  it('should reduce', function () {
-    const reduced = List.from([1, 2, 3])
-      .reduce((acc, e) => acc + e, 5);
+  it('should fold', function () {
+    const folded = List.from([1, 2, 3])
+      .fold((acc, e) => acc + e, 5);
 
-    expect(reduced).to.equal(11);
+    expect(folded).to.equal(11);
   });
 
-  it('should map with a reduce to', function () {
+  it('should map with a fold to', function () {
     const result = List.from([1, 2, 3])
-      .reduce((acc, e) => List.Cons(e+2, acc), List.Nil)
-      .reduce((acc, e) => List.Cons(e, acc), List.Nil)
+      .fold((acc, e) => List.Cons(e + 2, acc), List.Nil)
+      .fold((acc, e) => List.Cons(e, acc), List.Nil)
       .toArray();
 
     expect(result).to.deep.equal([3, 4, 5]);
@@ -45,4 +45,12 @@ describe('List', () => {
 
     expect(filtered).to.deep.equal([2]);
   });
+
+  it('should reduce', function () {
+    let reduced = List.from([1, 2, 3])
+      .reduce((acc, e) => acc + e);
+
+    expect(reduced).to.equal(6);
+  });
+
 });
